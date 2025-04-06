@@ -76,7 +76,7 @@ class EmployeeForm extends React.Component {
             onChange={this.handleInputChange}  // Call this function when input changes
           />
         </div>
-        <button type="submit">Submit</button>  {/* Submit button */}
+        <button type="submit">Add</button>  {/* Submit button */}
       </form>
     );
   }
