@@ -1,14 +1,17 @@
 import React from 'react';
-import './EmployeeForm.css';  // CSS is correctly imported
+import './EmployeeForm.css'; // Ensure this path is correct
 
 class EmployeeForm extends React.Component {
   constructor(props) {
     super(props);
+    // Initialize state with employees from local storage or an empty array
+    const storedEmployees = localStorage.getItem('employees');
     this.state = {
       name: '',
       email: '',
       title: '',
-      department: ''
+      department: '',
+      employees: storedEmployees ? JSON.parse(storedEmployees) : []
     };
   }
 
@@ -19,15 +22,28 @@ class EmployeeForm extends React.Component {
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log('Form Submitted with:', this.state);
-    this.setState({ name: '', email: '', title: '', department: '' });
+    const { name, email, title, department, employees } = this.state;
+    const newEmployee = { name, email, title, department };
+
+    // Update state with the new employee
+    const updatedEmployees = [...employees, newEmployee];
+    this.setState({
+      employees: updatedEmployees,
+      name: '',
+      email: '',
+      title: '',
+      department: ''
+    });
+
+    // Persist the updated employees array to local storage
+    localStorage.setItem('employees', JSON.stringify(updatedEmployees));
   }
 
   render() {
     return (
-      <div className="employee-form"> {/* Apply CSS class to container */}
+      <div className="employee-form">
         <h2>Add New Employee</h2>
-        <form onSubmit={this.handleFormSubmit}>  {/* Matches CSS selector .employee-form form */}
+        <form onSubmit={this.handleFormSubmit}>
           <label>Name:</label>
           <input
             type="text"
@@ -58,6 +74,14 @@ class EmployeeForm extends React.Component {
           />
           <button type="submit">Add</button>
         </form>
+        <h3>Employee List</h3>
+        <ul>
+          {this.state.employees.map((employee, index) => (
+            <li key={index}>
+              {employee.name} - {employee.email} - {employee.title} - {employee.department}
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
