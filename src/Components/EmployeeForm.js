@@ -1,6 +1,6 @@
-import './EmployeeForm.css';  // Import the CSS file
-
 import React from 'react';
+
+import './EmployeeForm.css';  // Import the CSS file
 
 class EmployeeForm extends React.Component {
   constructor(props) {
