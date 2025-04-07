@@ -1,6 +1,5 @@
 import React from 'react';
-
-import './EmployeeForm.css';  // Import the CSS file
+import './EmployeeForm.css';  // CSS is correctly imported
 
 class EmployeeForm extends React.Component {
   constructor(props) {
@@ -13,74 +12,55 @@ class EmployeeForm extends React.Component {
     };
   }
 
-  // Method to handle input changes
   handleInputChange = (event) => {
     const { name, value } = event.target;
-    this.setState({
-      [name]: value // dynamically set state based on the input field's name
-    });
+    this.setState({ [name]: value });
   }
 
-  // Method to handle form submission
   handleFormSubmit = (event) => {
-    event.preventDefault();  // Prevent page refresh
-
-    // Log the current state to the console
+    event.preventDefault();
     console.log('Form Submitted with:', this.state);
-
-    // Reset the state to clear the input fields
-    this.setState({
-      name: '',
-      email: '',
-      title: '',
-      department: ''
-    });
+    this.setState({ name: '', email: '', title: '', department: '' });
   }
 
   render() {
     return (
-      <form onSubmit={this.handleFormSubmit}>  {/* Attach onSubmit handler */}
-        <div>
+      <div className="employee-form"> {/* Apply CSS class to container */}
+        <h2>Add New Employee</h2>
+        <form onSubmit={this.handleFormSubmit}>  {/* Matches CSS selector .employee-form form */}
           <label>Name:</label>
           <input
             type="text"
             name="name"
             value={this.state.name}
-            onChange={this.handleInputChange}  // Call this function when input changes
+            onChange={this.handleInputChange}
           />
-        </div>
-        <div>
           <label>Email:</label>
           <input
             type="email"
             name="email"
             value={this.state.email}
-            onChange={this.handleInputChange}  // Call this function when input changes
+            onChange={this.handleInputChange}
           />
-        </div>
-        <div>
           <label>Title:</label>
           <input
             type="text"
             name="title"
             value={this.state.title}
-            onChange={this.handleInputChange}  // Call this function when input changes
+            onChange={this.handleInputChange}
           />
-        </div>
-        <div>
           <label>Department:</label>
           <input
             type="text"
             name="department"
             value={this.state.department}
-            onChange={this.handleInputChange}  // Call this function when input changes
+            onChange={this.handleInputChange}
           />
-        </div>
-        <button type="submit">Add</button>  {/* Submit button */}
-      </form>
+          <button type="submit">Add</button>
+        </form>
+      </div>
     );
   }
 }
 
-// Exporting the component for use in other parts of the app
 export default EmployeeForm;
