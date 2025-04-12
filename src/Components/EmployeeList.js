@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Add this import statement
 import './EmployeeList.css'; // Make sure to import the styles
 
 function EmployeeList(props) {
@@ -7,21 +6,22 @@ function EmployeeList(props) {
     <div className="employee-list">
       <h1>Employee List</h1>
       <ul>
-        {props.employees.map((employee) => (
-          <li key={employee.EmployeeId}>
+        {props.employees.map((employee, index) => (
+          <li key={index}>
             <div className="employee-name">
-              {/* Create a link to the employee detail page */}
-              <Link to={`/employees/${employee.EmployeeId}`}>
-                {employee.name}
-              </Link>
+              {/* Display employee name without a link */}
+              <span className="clickable-name">{employee.name}</span>
             </div>
             <div className="employee-actions">
-              {/* Implement Edit and Remove actions here */}
-              <Link to={`/edit/${employee.EmployeeId}`} className="edit-btn">
-                Edit
-              </Link>
+              {/* Use index for Edit and Remove actions */}
               <button
-                onClick={() => props.removeEmployee(employee.EmployeeId)}
+                onClick={() => props.editEmployee(index, employee)}
+                className="edit-btn"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => props.removeEmployee(index)}
                 className="remove-btn"
               >
                 Remove
