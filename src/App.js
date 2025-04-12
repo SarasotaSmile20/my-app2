@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import EmployeeForm from './Components/EmployeeForm';
+import EmployeeList from './Components/EmployeeList'; // Import the EmployeeList component
 import useLocalStorage from './useLocalStorage';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          {/* Route to the employee form */}
           <Route
             path="/"
             element={
@@ -52,6 +54,14 @@ function App() {
                 feedbackMessage={feedbackMessage}
                 clearMessage={() => setFeedbackMessage('')}
               />
+            }
+          />
+          
+          {/* Route to display employee list */}
+          <Route
+            path="/employees"
+            element={
+              <EmployeeList employees={employees} />
             }
           />
         </Routes>

@@ -1,0 +1,80 @@
+/* Ensure the list takes up appropriate space and has styling */
+.employee-list {
+    padding: 20px;
+    background-color: #f4f4f9;
+    min-height: 100vh; /* Ensures the content doesn't get pushed to the bottom */
+  }
+  
+  .employee-list h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .employee-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .employee-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    transition: background-color 0.3s;
+  }
+  
+  .employee-list li:hover {
+    background-color: #f1f1f1; /* Adds hover effect */
+  }
+  
+  .employee-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .employee-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .edit-btn, .remove-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-btn {
+    background-color: #007bff;
+    text-decoration: none;
+  }
+  
+  .edit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .remove-btn {
+    background-color: #dc3545;
+    border: none;
+  }
+  
+  .remove-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* Style the Link to ensure it's visible */
+  .employee-name a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .employee-name a:hover {
+    color: #007bff;
+  }
+  
