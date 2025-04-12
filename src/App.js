@@ -10,20 +10,30 @@ function App() {
   const [feedbackMessage, setFeedbackMessage] = React.useState('');
 
   const addEmployee = (newEmployee) => {
-    setEmployees([...employees, newEmployee]);
+    setEmployees((prevEmployees) => {
+      const updatedEmployees = [...prevEmployees, newEmployee];
+      console.log('Employee added:', newEmployee); // Log added employee
+      return updatedEmployees;
+    });
     setFeedbackMessage('Employee added successfully!');
   };
 
   const editEmployee = (index, updatedEmployee) => {
-    const updatedList = [...employees];
-    updatedList[index] = updatedEmployee;
-    setEmployees(updatedList);
+    setEmployees((prevEmployees) => {
+      const updatedList = [...prevEmployees];
+      updatedList[index] = updatedEmployee;
+      console.log('Employee updated at index', index, ':', updatedEmployee); // Log updated employee
+      return updatedList;
+    });
     setFeedbackMessage('Employee updated successfully!');
   };
 
   const removeEmployee = (index) => {
-    const updatedList = employees.filter((_, i) => i !== index);
-    setEmployees(updatedList);
+    setEmployees((prevEmployees) => {
+      const updatedList = prevEmployees.filter((_, i) => i !== index);
+      console.log('Employee removed at index', index); // Log removed employee
+      return updatedList;
+    });
     setFeedbackMessage('Employee removed successfully!');
   };
 
