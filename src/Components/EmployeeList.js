@@ -1,27 +1,25 @@
 import React from 'react';
-import './EmployeeList.css'; // Make sure to import the styles
+import { Link } from 'react-router-dom';
+import './EmployeeList.css';
 
-function EmployeeList(props) {
+function EmployeeList({ employees, removeEmployee }) {
   return (
     <div className="employee-list">
-      <h1>Employee List</h1>
+      <h2>Employee List</h2>
       <ul>
-        {props.employees.map((employee, index) => (
-          <li key={index}>
+        {employees.map((employee) => (
+          <li key={employee.id}>
             <div className="employee-name">
-              {/* Display employee name without a link */}
-              <span className="clickable-name">{employee.name}</span>
+              {/* Link matches the path in App.js */}
+              <Link to={`/employee/${employee.id}`}>
+                {employee.name}
+              </Link>
             </div>
             <div className="employee-actions">
-              {/* Use index for Edit and Remove actions */}
+              {/* If you want to support edit by ID later */}
+              {/* <Link to={`/edit/${employee.id}`} className="edit-btn">Edit</Link> */}
               <button
-                onClick={() => props.editEmployee(index, employee)}
-                className="edit-btn"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => props.removeEmployee(index)}
+                onClick={() => removeEmployee(employee.id)}
                 className="remove-btn"
               >
                 Remove

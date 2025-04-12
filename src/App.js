@@ -3,7 +3,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import EmployeeForm from './Components/EmployeeForm';
-import EmployeeList from './Components/EmployeeList'; // Import the EmployeeList component
+import EmployeeList from './Components/EmployeeList';
+import EmployeeDetail from './Components/EmployeeDetail';
 import useLocalStorage from './useLocalStorage';
 
 function App() {
@@ -11,11 +12,9 @@ function App() {
   const [feedbackMessage, setFeedbackMessage] = React.useState('');
 
   const addEmployee = (newEmployee) => {
-    setEmployees((prevEmployees) => {
-      const updatedEmployees = [...prevEmployees, newEmployee];
-      console.log('Employee added:', newEmployee); // Log added employee
-      return updatedEmployees;
-    });
+    const newId = Date.now(); // Assign a unique ID
+    const employeeWithId = { ...newEmployee, id: newId };
+    setEmployees((prevEmployees) => [...prevEmployees, employeeWithId]);
     setFeedbackMessage('Employee added successfully!');
   };
 
@@ -23,18 +22,15 @@ function App() {
     setEmployees((prevEmployees) => {
       const updatedList = [...prevEmployees];
       updatedList[index] = updatedEmployee;
-      console.log('Employee updated at index', index, ':', updatedEmployee); // Log updated employee
       return updatedList;
     });
     setFeedbackMessage('Employee updated successfully!');
   };
 
   const removeEmployee = (index) => {
-    setEmployees((prevEmployees) => {
-      const updatedList = prevEmployees.filter((_, i) => i !== index);
-      console.log('Employee removed at index', index); // Log removed employee
-      return updatedList;
-    });
+    setEmployees((prevEmployees) =>
+      prevEmployees.filter((_, i) => i !== index)
+    );
     setFeedbackMessage('Employee removed successfully!');
   };
 
@@ -42,27 +38,28 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Route to the employee form */}
+          {/* Main page with form and list */}
           <Route
             path="/"
             element={
-              <EmployeeForm
-                employees={employees}
-                addEmployee={addEmployee}
-                editEmployee={editEmployee}
-                removeEmployee={removeEmployee}
-                feedbackMessage={feedbackMessage}
-                clearMessage={() => setFeedbackMessage('')}
-              />
+              <>
+                <EmployeeForm
+                  employees={employees}
+                  addEmployee={addEmployee}
+                  editEmployee={editEmployee}
+                  removeEmployee={removeEmployee}
+                  feedbackMessage={feedbackMessage}
+                  clearMessage={() => setFeedbackMessage('')}
+                />
+                <EmployeeList employees={employees} />
+              </>
             }
           />
-          
-          {/* Route to display employee list */}
+
+          {/* Employee detail page */}
           <Route
-            path="/employees"
-            element={
-              <EmployeeList employees={employees} />
-            }
+            path="/employee/:id"
+            element={<EmployeeDetail employees={employees} />}
           />
         </Routes>
       </div>
