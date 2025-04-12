@@ -1,48 +1,72 @@
 import React from 'react';
-import './EmployeeForm.css'; // Ensure this path is correct
+import './EmployeeForm.css';
 
 class EmployeeForm extends React.Component {
   constructor(props) {
     super(props);
-    // Initialize state with employees from local storage or an empty array
-    const storedEmployees = localStorage.getItem('employees');
     this.state = {
       name: '',
       email: '',
       title: '',
       department: '',
-      employees: storedEmployees ? JSON.parse(storedEmployees) : []
+      editingIndex: null,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Clear feedback message after 3 seconds when changed
+    if (
+      prevProps.feedbackMessage !== this.props.feedbackMessage &&
+      this.props.feedbackMessage
+    ) {
+      setTimeout(() => {
+        this.props.clearMessage();
+      }, 3000);
+    }
   }
 
   handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-  }
+  };
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    const { name, email, title, department, employees } = this.state;
+    const { name, email, title, department, editingIndex } = this.state;
+
+    // Validation: prevent submitting empty fields
+    if (!name || !email || !title || !department) {
+      alert('All fields are required.');
+      return;
+    }
+
     const newEmployee = { name, email, title, department };
 
-    // Update state with the new employee
-    const updatedEmployees = [...employees, newEmployee];
+    if (editingIndex !== null) {
+      this.props.editEmployee(editingIndex, newEmployee);
+    } else {
+      this.props.addEmployee(newEmployee);
+    }
+
+    // Reset form
     this.setState({
-      employees: updatedEmployees,
       name: '',
       email: '',
       title: '',
-      department: ''
+      department: '',
+      editingIndex: null,
     });
+  };
 
-    // Persist the updated employees array to local storage
-    localStorage.setItem('employees', JSON.stringify(updatedEmployees));
-  }
+  handleEdit = (index) => {
+    const employee = this.props.employees[index];
+    this.setState({ ...employee, editingIndex: index });
+  };
 
   render() {
     return (
       <div className="employee-form">
-        <h2>Add New Employee</h2>
+        <h2>{this.state.editingIndex !== null ? 'Edit Employee' : 'Add Employee'}</h2>
         <form onSubmit={this.handleFormSubmit}>
           <label>Name:</label>
           <input
@@ -72,13 +96,27 @@ class EmployeeForm extends React.Component {
             value={this.state.department}
             onChange={this.handleInputChange}
           />
-          <button type="submit">Add</button>
+          <button type="submit">
+            {this.state.editingIndex !== null ? 'Update' : 'Add'}
+          </button>
         </form>
+
+        {/* Confirmation message */}
+        {this.props.feedbackMessage && (
+          <p className="success-message">{this.props.feedbackMessage}</p>
+        )}
+
         <h3>Employee List</h3>
         <ul>
-          {this.state.employees.map((employee, index) => (
+          {this.props.employees.map((employee, index) => (
             <li key={index}>
-              {employee.name} - {employee.email} - {employee.title} - {employee.department}
+              <div className="employee-details">
+                {employee.name} - {employee.email} - {employee.title} - {employee.department}
+              </div>
+              <div className="employee-actions">
+                <button onClick={() => this.handleEdit(index)}>Edit</button>
+                <button onClick={() => this.props.removeEmployee(index)}>Remove</button>
+              </div>
             </li>
           ))}
         </ul>

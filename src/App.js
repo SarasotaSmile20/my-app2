@@ -7,9 +7,24 @@ import useLocalStorage from './useLocalStorage';
 
 function App() {
   const [employees, setEmployees] = useLocalStorage('employees', []);
+  const [feedbackMessage, setFeedbackMessage] = React.useState('');
 
   const addEmployee = (newEmployee) => {
-    setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
+    setEmployees([...employees, newEmployee]);
+    setFeedbackMessage('Employee added successfully!');
+  };
+
+  const editEmployee = (index, updatedEmployee) => {
+    const updatedList = [...employees];
+    updatedList[index] = updatedEmployee;
+    setEmployees(updatedList);
+    setFeedbackMessage('Employee updated successfully!');
+  };
+
+  const removeEmployee = (index) => {
+    const updatedList = employees.filter((_, i) => i !== index);
+    setEmployees(updatedList);
+    setFeedbackMessage('Employee removed successfully!');
   };
 
   return (
@@ -18,7 +33,16 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<EmployeeForm addEmployee={addEmployee} />}
+            element={
+              <EmployeeForm
+                employees={employees}
+                addEmployee={addEmployee}
+                editEmployee={editEmployee}
+                removeEmployee={removeEmployee}
+                feedbackMessage={feedbackMessage}
+                clearMessage={() => setFeedbackMessage('')}
+              />
+            }
           />
         </Routes>
       </div>
