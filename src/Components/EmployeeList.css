@@ -1,78 +1,117 @@
-/* Ensure the list takes up appropriate space and has styling */
+/* Container for the employee list */
 .employee-list {
   padding: 20px;
   background-color: #f4f4f9;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.employee-list h1,
+/* List title */
 .employee-list h3 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
 }
 
+/* Reset list styling */
 .employee-list ul {
   list-style: none;
   padding: 0;
-  width: 100%;
-  max-width: 600px;
+  margin: 0;
 }
 
+/* Each employee item */
 .employee-list li {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
+  flex-direction: column; /* Stack image, name, and buttons vertically */
+  align-items: center;     /* Center horizontally */
+  justify-content: center;
+  padding: 16px;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
   background-color: #fff;
   transition: background-color 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .employee-list li:hover {
   background-color: #f1f1f1;
 }
 
+/* Employee image section */
+.employee-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Image styling */
+.employee-image,
+.default-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  border: 2px solid #ccc;
+}
+
+/* Placeholder if no image is provided */
+.default-image {
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  font-size: 12px;
+}
+
+/* Name styling */
 .employee-name {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   color: #007bff;
   text-align: center;
-  flex: 1;
 }
 
 .employee-name:hover {
   text-decoration: underline;
 }
 
+/* Action buttons container */
 .employee-actions {
   display: flex;
   gap: 10px;
   justify-content: center;
+  align-items: center;
 }
 
-/* Hot pink buttons with shadows */
-.edit-btn,
-.remove-btn {
-  padding: 8px 14px;
+/* Button styles */
+.edit-btn, .remove-btn {
+  padding: 6px 12px;
   font-size: 14px;
   color: white;
-  background-color: hotpink;
-  border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(255, 20, 147, 0.3);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  transition: background-color 0.3s;
 }
 
-.edit-btn:hover,
+.edit-btn {
+  background-color: #ff007f;
+}
+
+.edit-btn:hover {
+  background-color: #d60066;
+}
+
+.remove-btn {
+  background-color: #ff007f;
+}
+
 .remove-btn:hover {
-  background-color: #ff1493;
-  box-shadow: 0 6px 12px rgba(255, 20, 147, 0.45);
+  background-color: #d60066;
 }

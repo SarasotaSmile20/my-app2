@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -16,7 +15,6 @@ function App() {
   // Add or update employee
   const handleSubmitEmployee = (employeeData) => {
     if (employeeToEdit) {
-      // Editing existing employee
       setEmployees((prev) =>
         prev.map((emp) =>
           emp.id === employeeToEdit.id ? { ...employeeData, id: emp.id } : emp
@@ -25,7 +23,6 @@ function App() {
       setFeedbackMessage('Employee updated successfully!');
       setEmployeeToEdit(null); // Clear editing state
     } else {
-      // Adding new employee
       const newId = Date.now();
       const employeeWithId = { ...employeeData, id: newId };
       setEmployees((prev) => [...prev, employeeWithId]);
@@ -57,7 +54,7 @@ function App() {
                 <EmployeeList
                   employees={employees}
                   removeEmployee={removeEmployee}
-                  onEdit={(employee) => setEmployeeToEdit(employee)}
+                  editEmployee={(employee) => setEmployeeToEdit(employee)}
                 />
               </>
             }

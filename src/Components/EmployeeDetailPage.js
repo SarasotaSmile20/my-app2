@@ -1,28 +1,36 @@
-// src/Components/EmployeeDetailPage.js
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import './EmployeeDetailPage.css';
 
 function EmployeeDetailPage({ employees }) {
-  const { id } = useParams();
-  const employee = employees.find((emp) => emp.id === parseInt(id));
+  const { id } = useParams(); // Retrieve the id from URL params
+  const employee = employees.find((emp) => emp.id === Number(id)); // Convert id to number
 
   if (!employee) {
-    return (
-      <div>
-        <h2>Employee not found</h2>
-        <Link to="/">Back to Employee List</Link>
-      </div>
-    );
+    return <div>Employee not found!</div>;
   }
 
   return (
-    <div className="employee-detail">
-      <h2>Employee Details</h2>
-      <p><strong>Name:</strong> {employee.name}</p>
-      <p><strong>Email:</strong> {employee.email}</p>
-      <p><strong>Title:</strong> {employee.title}</p>
-      <p><strong>Department:</strong> {employee.department}</p>
-      <Link to="/">← Back to Employee List</Link>
+    <div className="employee-detail-page">
+      <div className="employee-detail-header">
+        <h2>Employee Details</h2>
+      </div>
+      <div className="employee-detail-container">
+        <div className="employee-photo">
+          {employee.picture ? (
+            <img src={employee.picture} alt={employee.name} className="detail-photo" />
+          ) : (
+            <div className="default-photo">{employee.name.charAt(0)}</div>
+          )}
+        </div>
+        <h4>Name: {employee.name}</h4>
+        <p>Email: {employee.email}</p>
+        <p>Title: {employee.title}</p>
+        <p>Department: {employee.department}</p>
+        <Link to="/" className="back-btn">
+          Back to List
+        </Link>
+      </div>
     </div>
   );
 }

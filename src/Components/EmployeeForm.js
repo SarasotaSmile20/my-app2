@@ -1,98 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import './EmployeeForm.css';
+import React, { useState } from 'react';
+import './EmployeeForm.css'; // Optional if you have styles here
 
-const EmployeeForm = ({ employee, onSubmit, feedbackMessage, clearMessage }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    title: '',
-    department: '',
-  });
+function EmployeeForm({ employee, onSubmit }) {
+  const [name, setName] = useState(employee?.name || '');
+  const [email, setEmail] = useState(employee?.email || '');
+  const [title, setTitle] = useState(employee?.title || '');
+  const [department, setDepartment] = useState(employee?.department || '');
+  const [picture, setPicture] = useState(employee?.picture || '');
 
-  useEffect(() => {
-    // If there's an employee being edited, pre-fill the form
-    if (employee) {
-      setFormData({
-        name: employee.name,
-        email: employee.email,
-        title: employee.title,
-        department: employee.department,
-      });
+  // Handle image file change
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPicture(reader.result); // Store image data in base64
+      };
+      reader.readAsDataURL(file);
     }
-  }, [employee]);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const { name, email, title, department } = formData;
-
-    if (!name || !email || !title || !department) {
-      alert('All fields are required.');
-      return;
-    }
-
-    onSubmit(formData);
-    setFormData({
-      name: '',
-      email: '',
-      title: '',
-      department: '',
-    });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const employeeData = {
+      name,
+      email,
+      title,
+      department,
+      picture,
+    };
+    onSubmit(employeeData);
   };
-
-  useEffect(() => {
-    if (feedbackMessage) {
-      setTimeout(() => clearMessage(), 3000);
-    }
-  }, [feedbackMessage, clearMessage]);
 
   return (
-    <div className="employee-form">
-      <h2>{employee ? 'Edit Employee' : 'Add Employee'}</h2>
-      <form onSubmit={handleFormSubmit}>
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-        <label>Title:</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-        />
-        <label>Department:</label>
-        <input
-          type="text"
-          name="department"
-          value={formData.department}
-          onChange={handleInputChange}
-        />
-        <button type="submit">
-          {employee ? 'Update Employee' : 'Add Employee'}
-        </button>
+    <div className="employee-form-container">
+      <form onSubmit={handleSubmit} className="employee-form">
+        <div className="form-group">
+          <label>Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Department</label>
+          <input
+            type="text"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Upload Picture</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </div>
+        <button type="submit">Submit</button>
       </form>
-
-      {feedbackMessage && <p className="success-message">{feedbackMessage}</p>}
     </div>
   );
-};
+}
 
 export default EmployeeForm;
