@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import EmployeeForm from './Components/EmployeeForm';
 import EmployeeList from './Components/EmployeeList';
-import EmployeeDetail from './Components/EmployeeDetail';
 import useLocalStorage from './useLocalStorage';
 
 function App() {
@@ -12,7 +11,7 @@ function App() {
   const [feedbackMessage, setFeedbackMessage] = React.useState('');
 
   const addEmployee = (newEmployee) => {
-    const newId = Date.now(); // Assign a unique ID
+    const newId = Date.now(); // Unique ID using timestamp
     const employeeWithId = { ...newEmployee, id: newId };
     setEmployees((prevEmployees) => [...prevEmployees, employeeWithId]);
     setFeedbackMessage('Employee added successfully!');
@@ -27,9 +26,9 @@ function App() {
     setFeedbackMessage('Employee updated successfully!');
   };
 
-  const removeEmployee = (index) => {
+  const removeEmployee = (id) => {
     setEmployees((prevEmployees) =>
-      prevEmployees.filter((_, i) => i !== index)
+      prevEmployees.filter((employee) => employee.id !== id)
     );
     setFeedbackMessage('Employee removed successfully!');
   };
@@ -38,7 +37,7 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Main page with form and list */}
+          {/* Home page: form and employee list */}
           <Route
             path="/"
             element={
@@ -51,15 +50,15 @@ function App() {
                   feedbackMessage={feedbackMessage}
                   clearMessage={() => setFeedbackMessage('')}
                 />
-                <EmployeeList employees={employees} />
+                <EmployeeList employees={employees} removeEmployee={removeEmployee} />
               </>
             }
           />
 
-          {/* Employee detail page */}
+          {/* Route for detail view handled within EmployeeList */}
           <Route
             path="/employee/:id"
-            element={<EmployeeDetail employees={employees} />}
+            element={<EmployeeList employees={employees} removeEmployee={removeEmployee} />}
           />
         </Routes>
       </div>

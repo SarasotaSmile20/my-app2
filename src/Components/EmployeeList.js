@@ -1,8 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './EmployeeList.css';
 
 function EmployeeList({ employees, removeEmployee }) {
+  const { id } = useParams(); // Get ID from URL if present
+
+  // If we're on a detail route like /employee/:id
+  if (id) {
+    const employee = employees.find(emp => emp.id === parseInt(id));
+
+    if (!employee) {
+      return <div>Employee not found.</div>;
+    }
+
+    return (
+      <div className="employee-detail">
+        <h1>{employee.name}</h1>
+        <p><strong>Email:</strong> {employee.email}</p>
+        <p><strong>Title:</strong> {employee.title}</p>
+        <p><strong>Department:</strong> {employee.department}</p>
+        <Link to="/" className="back-btn">← Back to Form</Link>
+      </div>
+    );
+  }
+
+  // Default: show the employee list
   return (
     <div className="employee-list">
       <h2>Employee List</h2>
@@ -10,14 +32,11 @@ function EmployeeList({ employees, removeEmployee }) {
         {employees.map((employee) => (
           <li key={employee.id}>
             <div className="employee-name">
-              {/* Link matches the path in App.js */}
               <Link to={`/employee/${employee.id}`}>
                 {employee.name}
               </Link>
             </div>
             <div className="employee-actions">
-              {/* If you want to support edit by ID later */}
-              {/* <Link to={`/edit/${employee.id}`} className="edit-btn">Edit</Link> */}
               <button
                 onClick={() => removeEmployee(employee.id)}
                 className="remove-btn"
