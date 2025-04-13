@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './EmployeeForm.css'; // Optional if you have styles here
+import React, { useState, useEffect } from 'react';
+import './EmployeeForm.css';
 
 function EmployeeForm({ employee, onSubmit }) {
   const [name, setName] = useState(employee?.name || '');
@@ -7,14 +7,14 @@ function EmployeeForm({ employee, onSubmit }) {
   const [title, setTitle] = useState(employee?.title || '');
   const [department, setDepartment] = useState(employee?.department || '');
   const [picture, setPicture] = useState(employee?.picture || '');
+  const [confirmationMessage, setConfirmationMessage] = useState('');
 
-  // Handle image file change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPicture(reader.result); // Store image data in base64
+        setPicture(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -30,7 +30,22 @@ function EmployeeForm({ employee, onSubmit }) {
       picture,
     };
     onSubmit(employeeData);
+    setConfirmationMessage(employee ? 'Employee updated!' : 'Employee added!');
+    setName('');
+    setEmail('');
+    setTitle('');
+    setDepartment('');
+    setPicture('');
   };
+
+  useEffect(() => {
+    if (confirmationMessage) {
+      const timer = setTimeout(() => {
+        setConfirmationMessage('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [confirmationMessage]);
 
   return (
     <div className="employee-form-container">
@@ -73,14 +88,14 @@ function EmployeeForm({ employee, onSubmit }) {
         </div>
         <div className="form-group">
           <label>Upload Picture</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
         </div>
         <button type="submit">Submit</button>
       </form>
+
+      {confirmationMessage && (
+        <div className="feedback-message">{confirmationMessage}</div>
+      )}
     </div>
   );
 }

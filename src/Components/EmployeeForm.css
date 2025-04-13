@@ -1,46 +1,33 @@
-/* Optional: Adds a background and centers the form */
 .employee-form-container {
-  width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  background: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-/* Optional: Styling for form */
-.employee-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.employee-form .form-group {
+  margin-bottom: 15px;
 }
 
-/* Optional: Style the individual form fields */
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-size: 16px;
+.employee-form label {
+  display: block;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.form-group input {
-  padding: 10px;
-  font-size: 16px;
+.employee-form input[type="text"],
+.employee-form input[type="email"],
+.employee-form input[type="file"] {
+  width: 100%;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.form-group input[type="file"] {
-  padding: 5px;
-}
-
-button {
-  padding: 12px;
+.employee-form button {
+  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -49,21 +36,16 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.employee-form button:hover {
   background-color: #0056b3;
 }
 
-/* Optional: Add a class for showing the feedback message */
 .feedback-message {
+  margin-top: 15px;
   padding: 10px;
   background-color: #4caf50;
   color: white;
   text-align: center;
-  margin-bottom: 20px;
   border-radius: 4px;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+  font-weight: bold;
 }
