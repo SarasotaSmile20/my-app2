@@ -1,27 +1,19 @@
-// Components/EmployeeList.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './EmployeeList.css';
 
-function EmployeeList({ employees, removeEmployee }) {
+function EmployeeList({ employees, editEmployee, removeEmployee }) {
   return (
     <div className="employee-list">
-      <h2>Employee List</h2>
+      <h3>Employee List</h3>
       <ul>
-        {employees.map((employee) => (
-          <li key={employee.id}>
-            <div className="employee-name">
-              <Link to={`/employee/${employee.id}`}>
-                {employee.name}
-              </Link>
+        {employees.map((employee, index) => (
+          <li key={index}>
+            <div className="employee-details">
+              {employee.name} - {employee.email} - {employee.title} - {employee.department}
             </div>
             <div className="employee-actions">
-              <button
-                onClick={() => removeEmployee(employee.id)}
-                className="remove-btn"
-              >
-                Remove
-              </button>
+              <button onClick={() => editEmployee(index)}>Edit</button>
+              <button onClick={() => removeEmployee(index)}>Remove</button>
             </div>
           </li>
         ))}

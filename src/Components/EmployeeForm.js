@@ -1,128 +1,98 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './EmployeeForm.css';
 
-class EmployeeForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      email: '',
-      title: '',
-      department: '',
-      editingIndex: null,
-    };
-  }
+const EmployeeForm = ({ employee, onSubmit, feedbackMessage, clearMessage }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    title: '',
+    department: '',
+  });
 
-  componentDidUpdate(prevProps) {
-    // Clear feedback message after 3 seconds when changed
-    if (
-      prevProps.feedbackMessage !== this.props.feedbackMessage &&
-      this.props.feedbackMessage
-    ) {
-      setTimeout(() => {
-        this.props.clearMessage();
-      }, 3000);
+  useEffect(() => {
+    // If there's an employee being edited, pre-fill the form
+    if (employee) {
+      setFormData({
+        name: employee.name,
+        email: employee.email,
+        title: employee.title,
+        department: employee.department,
+      });
     }
-  }
+  }, [employee]);
 
-  handleInputChange = (event) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  handleFormSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-    const { name, email, title, department, editingIndex } = this.state;
+    const { name, email, title, department } = formData;
 
-    // Validation: prevent submitting empty fields
     if (!name || !email || !title || !department) {
       alert('All fields are required.');
       return;
     }
 
-    const newEmployee = { name, email, title, department };
-
-    if (editingIndex !== null) {
-      this.props.editEmployee(editingIndex, newEmployee);
-    } else {
-      this.props.addEmployee(newEmployee);
-    }
-
-    // Reset form
-    this.setState({
+    onSubmit(formData);
+    setFormData({
       name: '',
       email: '',
       title: '',
       department: '',
-      editingIndex: null,
     });
   };
 
-  handleEdit = (index) => {
-    const employee = this.props.employees[index];
-    this.setState({ ...employee, editingIndex: index });
-  };
+  useEffect(() => {
+    if (feedbackMessage) {
+      setTimeout(() => clearMessage(), 3000);
+    }
+  }, [feedbackMessage, clearMessage]);
 
-  render() {
-    return (
-      <div className="employee-form">
-        <h2>{this.state.editingIndex !== null ? 'Edit Employee' : 'Add Employee'}</h2>
-        <form onSubmit={this.handleFormSubmit}>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleInputChange}
-          />
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleInputChange}
-          />
-          <label>Title:</label>
-          <input
-            type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleInputChange}
-          />
-          <label>Department:</label>
-          <input
-            type="text"
-            name="department"
-            value={this.state.department}
-            onChange={this.handleInputChange}
-          />
-          <button type="submit">
-            {this.state.editingIndex !== null ? 'Update' : 'Add'}
-          </button>
-        </form>
+  return (
+    <div className="employee-form">
+      <h2>{employee ? 'Edit Employee' : 'Add Employee'}</h2>
+      <form onSubmit={handleFormSubmit}>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
+        <label>Email:</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        <label>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleInputChange}
+        />
+        <label>Department:</label>
+        <input
+          type="text"
+          name="department"
+          value={formData.department}
+          onChange={handleInputChange}
+        />
+        <button type="submit">
+          {employee ? 'Update Employee' : 'Add Employee'}
+        </button>
+      </form>
 
-        {/* Confirmation message */}
-        {this.props.feedbackMessage && (
-          <p className="success-message">{this.props.feedbackMessage}</p>
-        )}
-
-        <h3>Employee List</h3>
-        <ul>
-          {this.props.employees.map((employee, index) => (
-            <li key={index}>
-              <div className="employee-details">
-                {employee.name} - {employee.email} - {employee.title} - {employee.department}
-              </div>
-              <div className="employee-actions">
-                <button onClick={() => this.handleEdit(index)}>Edit</button>
-                <button onClick={() => this.props.removeEmployee(index)}>Remove</button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-}
+      {feedbackMessage && <p className="success-message">{feedbackMessage}</p>}
+    </div>
+  );
+};
 
 export default EmployeeForm;
