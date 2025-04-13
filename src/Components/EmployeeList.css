@@ -2,10 +2,14 @@
 .employee-list {
   padding: 20px;
   background-color: #f4f4f9;
-  min-height: 100vh; /* Ensures the content doesn't get pushed to the bottom */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.employee-list h1 {
+.employee-list h1,
+.employee-list h3 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
@@ -14,13 +18,15 @@
 .employee-list ul {
   list-style: none;
   padding: 0;
+  width: 100%;
+  max-width: 600px;
 }
 
 .employee-list li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 12px 20px;
   border: 1px solid #ddd;
   border-radius: 6px;
   margin-bottom: 10px;
@@ -29,47 +35,44 @@
 }
 
 .employee-list li:hover {
-  background-color: #f1f1f1; /* Adds hover effect */
+  background-color: #f1f1f1;
 }
 
 .employee-name {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  color: #007bff; /* Color similar to a link */
+  color: #007bff;
+  text-align: center;
+  flex: 1;
 }
 
 .employee-name:hover {
-  text-decoration: underline; /* Underline effect on hover */
+  text-decoration: underline;
 }
 
 .employee-actions {
   display: flex;
   gap: 10px;
+  justify-content: center;
 }
 
-.edit-btn, .remove-btn {
-  padding: 6px 12px;
+/* Hot pink buttons with shadows */
+.edit-btn,
+.remove-btn {
+  padding: 8px 14px;
   font-size: 14px;
   color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-btn {
-  background-color: #007bff;
-  text-decoration: none;
-}
-
-.edit-btn:hover {
-  background-color: #0056b3;
-}
-
-.remove-btn {
-  background-color: #dc3545;
+  background-color: hotpink;
   border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(255, 20, 147, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.edit-btn:hover,
 .remove-btn:hover {
-  background-color: #c82333;
+  background-color: #ff1493;
+  box-shadow: 0 6px 12px rgba(255, 20, 147, 0.45);
 }
