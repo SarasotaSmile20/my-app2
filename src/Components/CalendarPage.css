@@ -1,4 +1,3 @@
-
 .calendar-page-wrapper {
     padding: 20px;
   }
@@ -8,6 +7,13 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+  }
+  
+  .calendar-title-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
   }
   
   .calendar-header-bar h3 {
@@ -48,6 +54,19 @@
     margin-top: 0;
   }
   
+  /* Full-width inputs and dropdowns */
+  .modal-content input[type="datetime-local"],
+  .modal-content select {
+    display: block;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  /* Modal buttons */
   .modal-content button {
     margin-top: 10px;
     background-color: var(--button-bg);
@@ -55,15 +74,36 @@
     border: none;
     padding: 8px 12px;
     border-radius: 4px;
+    font-size: 14px;
     cursor: pointer;
   }
   
-  .modal-content input[type="datetime-local"] {
-    display: block;
-    margin-bottom: 10px;
-    padding: 6px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  .modal-content button:hover {
+    background-color: var(--button-hover, #0056b3);
   }
   
+  /* Calendar event styling */
+  .rbc-event {
+    background-color: rgba(100, 100, 255, 0.2); /* Fallback */
+    color: #000;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 13px;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    line-height: 1.3;
+    border: 1px solid #999;
+  }
+  
+  .rbc-event-content {
+    white-space: normal !important;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+  
+  .rbc-time-content > * + * > .rbc-day-slot .rbc-events-container {
+    display: flex !important;
+    flex-direction: row;
+    gap: 6px;
+  }
