@@ -23,21 +23,22 @@
   text-align: center;
 }
 
+/* ✅ Oval-shaped, smaller profile photo */
 .detail-photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  width: 120px;
+  height: 160px;
+  border-radius: 50% / 40%;
   object-fit: cover;
   display: block;
   margin: 0 auto 20px auto;
-  border: 3px solid white; /* white ring for dark backgrounds */
+  border: 3px solid white;
 }
 
 .default-photo {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 160px;
   background-color: #ddd;
-  border-radius: 50%;
+  border-radius: 50% / 40%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,4 +76,77 @@
 
 .back-btn:hover {
   background-color: var(--button-hover);
+}
+
+/* === Tabs Styling === */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  background-color: var(--form-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tabs button.active,
+.tabs button:hover {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+.tab-content {
+  padding: 20px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Email and Notes === */
+.email-btn {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.email-btn:hover {
+  background-color: var(--button-hover);
+}
+
+.notes-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  transition: border 0.2s ease;
 }
