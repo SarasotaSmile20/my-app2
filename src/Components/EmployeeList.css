@@ -1,10 +1,11 @@
 /* Container for the employee list */
 .employee-list {
   padding: 20px;
-  background-color: #f4f4f9;
+  background-color: var(--form-bg);
   min-height: 100vh;
-  max-width: 500px;       /* Match width with EmployeeForm */
-  margin: 0 auto;         /* Center the list */
+  max-width: 500px;
+  margin: 0 auto;
+  color: var(--text-color);
 }
 
 /* List title */
@@ -24,15 +25,15 @@
 /* Each employee item */
 .employee-list li {
   display: flex;
-  flex-direction: column; /* Stack image, name, and buttons vertically */
-  align-items: center;     /* Center horizontally */
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   margin-bottom: 16px;
-  background-color: #fff;
-  transition: background-color 0.3s;
+  background-color: var(--bg-color);
+  transition: background-color 0.3s, color 0.3s;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -56,7 +57,7 @@
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 8px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--border-color);
 }
 
 /* Placeholder if no image is provided */
@@ -74,7 +75,7 @@
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  color: #007bff;
+  color: var(--link-color);
   text-align: center;
 }
 
@@ -95,7 +96,7 @@
 .remove-btn {
   padding: 6px 12px;
   font-size: 14px;
-  color: white;
+  color: var(--button-text);
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -103,6 +104,7 @@
   transition: background-color 0.3s;
 }
 
+/* You can assign different button colors if needed */
 .edit-btn {
   background-color: #ff007f;
 }
