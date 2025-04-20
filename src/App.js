@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import EmployeeForm from './Components/EmployeeForm';
 import EmployeeList from './Components/EmployeeList';
 import EmployeeDetailPage from './Components/EmployeeDetailPage';
-
 import useLocalStorage from './useLocalStorage';
 
 function App() {
   const [employees, setEmployees] = useLocalStorage('employees', []);
-  const [feedbackMessage, setFeedbackMessage] = React.useState('');
-  const [employeeToEdit, setEmployeeToEdit] = React.useState(null);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [employeeToEdit, setEmployeeToEdit] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Add or update employee
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => !prev);
+  };
+
   const handleSubmitEmployee = (employeeData) => {
     if (employeeToEdit) {
       setEmployees((prev) =>
@@ -21,7 +24,7 @@ function App() {
         )
       );
       setFeedbackMessage('Employee updated successfully!');
-      setEmployeeToEdit(null); // Clear editing state
+      setEmployeeToEdit(null);
     } else {
       const newId = Date.now();
       const employeeWithId = { ...employeeData, id: newId };
@@ -30,7 +33,6 @@ function App() {
     }
   };
 
-  // Remove employee by ID
   const removeEmployee = (id) => {
     setEmployees((prev) => prev.filter((emp) => emp.id !== id));
     setFeedbackMessage('Employee removed successfully!');
@@ -38,14 +40,27 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div className={`App ${darkMode ? 'dark-mode' : ''}`}>
+        <div className="theme-toggle-wrapper">
+          <label htmlFor="darkModeToggle" className="theme-label">Dark Mode</label>
+          <label className="switch">
+            <input
+              id="darkModeToggle"
+              type="checkbox"
+              checked={darkMode}
+              onChange={toggleDarkMode}
+            />
+            <span className="slider round"></span>
+          </label>
+        </div>
+
         <Routes>
           <Route
             path="/"
             element={
               <>
                 <EmployeeForm
-                  key={employeeToEdit?.id || 'new'} // Forces form reset on edit switch
+                  key={employeeToEdit?.id || 'new'}
                   employee={employeeToEdit}
                   onSubmit={handleSubmitEmployee}
                   feedbackMessage={feedbackMessage}
