@@ -1,6 +1,4 @@
 
-/* Components/CalendarPage.css */
-
 .calendar-page-wrapper {
     display: flex;
     gap: 30px;
@@ -20,16 +18,58 @@
   .calendar-left h3 {
     margin-top: 0;
     font-size: 20px;
-    color: var(--text-color);
   }
   
-  .calendar-left p,
-  .calendar-left li {
+  .calendar-left ul {
+    padding-left: 20px;
     font-size: 14px;
+  }
+  
+  .nav-buttons {
+    margin-top: 15px;
+  }
+  
+  .nav-buttons button {
+    margin-right: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
   
   .calendar-right {
     flex: 2;
     min-width: 600px;
+  }
+  
+  /* Inline Modal */
+  .inline-modal {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    z-index: 999;
+  }
+  
+  .modal-content h4 {
+    margin-top: 0;
+  }
+  
+  .modal-content button {
+    margin-top: 10px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
   }
   

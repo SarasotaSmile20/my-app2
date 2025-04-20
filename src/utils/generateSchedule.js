@@ -1,41 +1,55 @@
 
 // utils/generateSchedule.js
-export function generateSchedule(employees) {
-    const shifts = [];
+
+const employeeColors = [
+    '#FF6B6B', '#6BCB77', '#4D96FF', '#FFD93D', '#C084FC', '#00B8A9', '#FF8C42'
+  ];
+  
+  export function generateSchedule(employees) {
+    const schedule = [];
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     const startHour = 9;
     const endHour = 17;
-    const hoursPerShift = endHour - startHour;
+    const hoursPerDay = endHour - startHour;
   
-    // Create slots: 5 days, 1 shift per day, 2 people each
-    const totalSlots = days.length;
+    const employeeMap = new Map();
+    employees.forEach((emp, index) => {
+      employeeMap.set(emp.name, {
+        ...emp,
+        color: employeeColors[index % employeeColors.length],
+        hours: 0,
+      });
+    });
   
-    // Ensure each employee works close to 40 hours
-    const shiftsPerEmployee = Math.floor((40 / hoursPerShift));
+    const dateRef = new Date();
+    const baseMonday = new Date(dateRef.setDate(dateRef.getDate() - dateRef.getDay() + 1));
+    baseMonday.setHours(0, 0, 0, 0);
   
-    let employeeIndex = 0;
-  
-    for (let i = 0; i < totalSlots; i++) {
-      const date = new Date();
-      const shiftDay = (date.getDay() + i + 1) % 7; // skip current day
-      const shiftDate = new Date();
-      shiftDate.setDate(date.getDate() + ((shiftDay + 7 - date.getDay()) % 7));
+    for (let dayOffset = 0; dayOffset < 5; dayOffset++) {
+      const shiftDate = new Date(baseMonday);
+      shiftDate.setDate(baseMonday.getDate() + dayOffset);
       shiftDate.setHours(startHour, 0, 0, 0);
+  
       const shiftEnd = new Date(shiftDate);
       shiftEnd.setHours(endHour);
   
-      // Assign 2 employees to each shift
-      for (let j = 0; j < 2; j++) {
-        const employee = employees[employeeIndex % employees.length];
-        shifts.push({
-          title: employee.name,
+      // Assign 2 employees per day who haven't reached 40 hours
+      const availableEmployees = Array.from(employeeMap.values())
+        .filter(emp => emp.hours <= 40)
+        .sort(() => 0.5 - Math.random());
+  
+      const assigned = availableEmployees.slice(0, 2);
+      assigned.forEach(emp => {
+        schedule.push({
+          title: emp.name,
           start: new Date(shiftDate),
           end: new Date(shiftEnd),
+          resource: { color: emp.color },
         });
-        employeeIndex++;
-      }
+        emp.hours += hoursPerDay; // Track hours worked
+      });
     }
   
-    return shifts;
+    return schedule;
   }
   
