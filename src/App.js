@@ -4,6 +4,7 @@ import './App.css';
 import EmployeeForm from './Components/EmployeeForm';
 import EmployeeList from './Components/EmployeeList';
 import EmployeeDetailPage from './Components/EmployeeDetailPage';
+import CalendarPage from './Components/CalendarPage'; // ✅ Import Calendar Page
 import useLocalStorage from './useLocalStorage';
 
 function App() {
@@ -77,6 +78,10 @@ function App() {
           <Route
             path="/employee/:id"
             element={<EmployeeDetailPage employees={employees} />}
+          />
+          <Route
+            path="/schedule"
+            element={<CalendarPage employees={employees} />} // ✅ Calendar route
           />
         </Routes>
       </div>
