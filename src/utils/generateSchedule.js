@@ -33,7 +33,6 @@ const employeeColors = [
       const shiftEnd = new Date(shiftDate);
       shiftEnd.setHours(endHour);
   
-      // Assign 2 employees per day who haven't reached 40 hours
       const availableEmployees = Array.from(employeeMap.values())
         .filter(emp => emp.hours <= 40)
         .sort(() => 0.5 - Math.random());
@@ -41,12 +40,13 @@ const employeeColors = [
       const assigned = availableEmployees.slice(0, 2);
       assigned.forEach(emp => {
         schedule.push({
+          id: Date.now() + Math.random(),
           title: emp.name,
           start: new Date(shiftDate),
           end: new Date(shiftEnd),
-          resource: { color: emp.color },
+          resource: { color: emp.color }
         });
-        emp.hours += hoursPerDay; // Track hours worked
+        emp.hours += hoursPerDay;
       });
     }
   
