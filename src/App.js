@@ -4,7 +4,7 @@ import './App.css';
 import EmployeeForm from './Components/EmployeeForm';
 import EmployeeList from './Components/EmployeeList';
 import EmployeeDetailPage from './Components/EmployeeDetailPage';
-import CalendarPage from './Components/CalendarPage'; // ✅ Import Calendar Page
+import CalendarPage from './Components/CalendarPage';
 import useLocalStorage from './useLocalStorage';
 
 function App() {
@@ -59,29 +59,30 @@ function App() {
           <Route
             path="/"
             element={
-              <>
-                <EmployeeForm
-                  key={employeeToEdit?.id || 'new'}
-                  employee={employeeToEdit}
-                  onSubmit={handleSubmitEmployee}
-                  feedbackMessage={feedbackMessage}
-                  clearMessage={() => setFeedbackMessage('')}
-                />
-                <EmployeeList
-                  employees={employees}
-                  removeEmployee={removeEmployee}
-                  editEmployee={(employee) => setEmployeeToEdit(employee)}
-                />
-              </>
+              <div className="dashboard-wrapper">
+                <div className="left-panel">
+                  <EmployeeForm
+                    key={employeeToEdit?.id || 'new'}
+                    employee={employeeToEdit}
+                    onSubmit={handleSubmitEmployee}
+                    feedbackMessage={feedbackMessage}
+                    clearMessage={() => setFeedbackMessage('')}
+                  />
+                  <EmployeeList
+                    employees={employees}
+                    removeEmployee={removeEmployee}
+                    editEmployee={(employee) => setEmployeeToEdit(employee)}
+                  />
+                </div>
+                <div className="right-panel">
+                  <CalendarPage employees={employees} />
+                </div>
+              </div>
             }
           />
           <Route
             path="/employee/:id"
             element={<EmployeeDetailPage employees={employees} />}
-          />
-          <Route
-            path="/schedule"
-            element={<CalendarPage employees={employees} />} // ✅ Calendar route
           />
         </Routes>
       </div>

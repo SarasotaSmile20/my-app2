@@ -138,3 +138,22 @@ input:checked + .slider:before {
 .slider.round {
   border-radius: 34px;
 }
+
+/* === MAIN DASHBOARD LAYOUT === */
+.dashboard-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.left-panel {
+  flex: 1;
+  min-width: 350px;
+}
+
+.right-panel {
+  flex: 2;
+  min-width: 600px;
+}
