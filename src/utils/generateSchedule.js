@@ -1,90 +1,69 @@
+
 // src/utils/generateSchedule.js
 
 import moment from 'moment';
 
-/**
- * Generate a 4‑shift schedule for each employee, every day of the month,
- * but with two **back‑to‑back** random days off per employee each week.
- *
- * Shifts (in order) are:
- *   • 08:00–16:00
- *   • 10:00–18:00
- *   • 12:00–20:00
- *   • 14:00–22:00
- *
- * @param {Array}  employees  Array of { id?, name }
- * @param {number} year       Full year (e.g. 2025)
- * @param {number} month      Zero‑based month (0=Jan…11=Dec)
- * @returns {Array}           Array of events for react‑big‑calendar
- */
+const SHIFTS = [
+  { start: 8, end: 16 },
+  { start: 10, end: 18 },
+  { start: 12, end: 20 },
+  { start: 14, end: 22 },
+];
+
 export default function generateSchedule(employees, year, month) {
   const schedule = [];
+  const daysInMonth = moment({ year, month }).daysInMonth();
 
-  // fixed shift windows
-  const SHIFT_WINDOWS = [
-    [8, 16],
-    [10, 18],
-    [12, 20],
-    [14, 22]
-  ];
-
-  // color palette
-  const palette = [
-    'rgba(0,128,128,0.6)',
-    'rgba(255,99,132,0.6)',
-    'rgba(75,192,192,0.6)',
-    'rgba(255,206,86,0.6)'
+  // Assign consistent colors per employee
+  const colors = [
+    'rgba(0, 128, 128, 0.6)',
+    'rgba(255, 99, 132, 0.6)',
+    'rgba(75, 192, 192, 0.6)',
+    'rgba(255, 206, 86, 0.6)',
+    'rgba(153, 102, 255, 0.6)',
+    'rgba(255, 159, 64, 0.6)'
   ];
   const colorMap = {};
   employees.forEach((emp, i) => {
-    colorMap[emp.name] = palette[i % palette.length];
+    colorMap[emp.name] = colors[i % colors.length];
   });
 
-  // compute days in month
-  const firstOf = moment({ year, month, day: 1 });
-  const totalDays = firstOf.daysInMonth();
+  // Determine two consecutive days off per employee (same every week)
+  const daysOfWeek = [0, 1, 2, 3, 4, 5, 6];
+  const daysOffMap = {};
+  employees.forEach((emp, i) => {
+    const firstOff = i % 6;  // rotate start days off
+    const secondOff = (firstOff + 1) % 7;
+    daysOffMap[emp.name] = [firstOff, secondOff];
+  });
 
-  // For each ISO week in month, pick one random startDow in 0..5,
-  // so offs are [startDow, startDow+1].
-  const offsByWeek = {}; // { weekNum: { empName: Set<dow> } }
+  // Loop through each day of the month
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = moment({ year, month, day });
+    const dow = date.day();
 
-  for (let d = 1; d <= totalDays; d++) {
-    const date = firstOf.clone().date(d);
-    const week = date.isoWeek();
+    let shiftIdx = 0;
+    const shuffledEmployees = [...employees].sort(() => Math.random() - 0.5);
 
-    if (!offsByWeek[week]) {
-      offsByWeek[week] = {};
-      employees.forEach(emp => {
-        const startDow = Math.floor(Math.random() * 6); // 0..5
-        offsByWeek[week][emp.name] = new Set([startDow, startDow + 1]);
-      });
-    }
-  }
+    for (const emp of shuffledEmployees) {
+      if (daysOffMap[emp.name].includes(dow)) continue;  // skip day off
 
-  // build schedule
-  for (let d = 1; d <= totalDays; d++) {
-    const date = firstOf.clone().date(d);
-    const week = date.isoWeek();
-    const dow  = date.day(); // 0=Sun..6=Sat
+      if (shiftIdx >= SHIFTS.length) break;  // all shifts covered
 
-    employees.forEach((emp, idx) => {
-      // skip if this is one of their two back‑to‑back days off
-      if (offsByWeek[week][emp.name].has(dow)) return;
-
-      // assign shift
-      const [sh, eh] = SHIFT_WINDOWS[idx % SHIFT_WINDOWS.length];
-      const start = date.clone().hour(sh).minute(0).toDate();
-      const end   = date.clone().hour(eh).minute(0).toDate();
+      const { start, end } = SHIFTS[shiftIdx];
+      const shiftStart = date.clone().hour(start).minute(0).toDate();
+      const shiftEnd = date.clone().hour(end).minute(0).toDate();
 
       schedule.push({
-        id:      `${emp.id||emp.name}-${date.format('YYYYMMDD')}-${sh}`,
-        title:   emp.name,
-        start,
-        end,
-        allDay:  false,
-        resource:{ color: colorMap[emp.name] }
+        id: `${emp.name}-${date.format('YYYYMMDD')}`,
+        title: emp.name,
+        start: shiftStart,
+        end: shiftEnd,
+        resource: { color: colorMap[emp.name] }
       });
-    });
+
+      shiftIdx++;
+    }
   }
 
   return schedule;

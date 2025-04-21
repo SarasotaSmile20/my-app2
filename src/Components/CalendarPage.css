@@ -157,3 +157,21 @@
   color: var(--text-color) !important;
   border-color: var(--border-color) !important;
 }
+
+.delete-all-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #dc3545; /* Danger red */
+  color: white;
+  border: 1px solid #b02a37; /* Slightly darker red border for contrast */
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adds pop on dark backgrounds */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.delete-all-btn:hover {
+  background-color: #c82333;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
